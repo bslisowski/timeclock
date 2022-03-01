@@ -1,12 +1,40 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack'
+import DashboardScreen from './screens/DashboardScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import ScheduleScreen from './screens/ScheduleScreen';
+import ClockinScreen from './screens/ClockinScreen';
+import CreateAnnouncementScreen from './screens/CreateAnnouncementScreen';
 
+const Tab = createBottomTabNavigator();
+
+function DashboardNav(){
+  const Stack = createStackNavigator();
+
+  return (
+    <Stack.Navigator screenOptions={{
+      headerShown: false
+    }}>
+      <Stack.Screen name="Dash" component={DashboardScreen}/>
+      <Stack.Screen name="Create" component={CreateAnnouncementScreen}/>     
+    </Stack.Navigator>
+  );
+}
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Tab.Navigator screenOptions={{
+    headerShown: false
+  }}>
+          <Tab.Screen name="Dashboard" component={DashboardNav}/>
+          <Tab.Screen name="Schedule" component={ScheduleScreen}/>
+          <Tab.Screen name="Clock" component={ClockinScreen}/>
+          <Tab.Screen name="Profile" component={ProfileScreen}/>
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
 
