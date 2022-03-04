@@ -9,6 +9,12 @@ import ScheduleScreen from './screens/ScheduleScreen';
 import ClockinScreen from './screens/ClockinScreen';
 import CreateAnnouncementScreen from './screens/CreateAnnouncementScreen';
 
+import Amplify from 'aws-amplify'
+import awsconfig from './src/aws-exports'
+import { withAuthenticator } from 'aws-amplify-react-native';
+
+Amplify.configure(awsconfig)
+
 const Tab = createBottomTabNavigator();
 
 function DashboardNav(){
@@ -23,7 +29,7 @@ function DashboardNav(){
     </Stack.Navigator>
   );
 }
-export default function App() {
+function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator screenOptions={{
@@ -36,7 +42,7 @@ export default function App() {
       </Tab.Navigator>
     </NavigationContainer>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -46,3 +52,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export default App;

@@ -1,0 +1,34 @@
+type Announcement @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  pinned: Boolean
+  subject: String
+  body: String
+  userID: ID! @index(name: "byUser")
+}
+
+type Shift @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  date: AWSDate
+  startTime: AWSTime
+  endTime: AWSTime
+  position: String
+  userID: ID! @index(name: "byUser")
+  scheduleID: ID! @index(name: "bySchedule")
+}
+
+type Schedule @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  startDate: AWSDate
+  endDate: AWSDate
+  Shifts: [Shift] @hasMany(indexName: "bySchedule", fields: ["id"])
+}
+
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  username: String!
+  name: String!
+  employer: String!
+  isManager: Boolean!
+  Shifts: [Shift] @hasMany(indexName: "byUser", fields: ["id"])
+  Announcements: [Announcement] @hasMany(indexName: "byUser", fields: ["id"])
+}

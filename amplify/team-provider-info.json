@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-timeclock-dev-133352-authRole",
+      "UnauthRoleArn": "arn:aws:iam::185607312129:role/amplify-timeclock-dev-133352-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::185607312129:role/amplify-timeclock-dev-133352-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-timeclock-dev-133352-deployment",
+      "UnauthRoleName": "amplify-timeclock-dev-133352-unauthRole",
+      "StackName": "amplify-timeclock-dev-133352",
+      "StackId": "arn:aws:cloudformation:us-east-1:185607312129:stack/amplify-timeclock-dev-133352/2c7391e0-998e-11ec-84d4-0a846f7aa1d5",
+      "AmplifyAppId": "d23jxrip0gwmc7"
+    },
+    "categories": {
+      "auth": {
+        "timeclock": {}
+      }
+    }
+  }
+}

@@ -61,18 +61,9 @@ function getDay(day){
 }
 
 const DayItem = ({ item }) => {
-    /*const day = new Date(shift.startTime);
-    const date = day.toDateString();
-    const startTime = getTime(day);
-    day.setTime(shift.endTime);
-    const endTime = getTime(day);
-    const position = getPosition(shift.position);*/
-
     const dayOfWeek = getDay(item.day);
     const date = item.date.toLocaleDateString();
-    /*console.log(dayOfWeek);
-    console.log(date);
-    console.log(" ");*/
+
     if (item.shift) {
         const day = new Date(item.shift.startTime);
         const startTime = getTime(day);
