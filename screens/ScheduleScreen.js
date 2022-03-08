@@ -106,6 +106,8 @@ function getPosition(position){
 const ScheduleScreen = ({ navigation }) => {
     const [showModal, setShowModal] = useState(false);
     const [modalItem, setModalItem] = useState(null);
+    const [searchTerm, setSearchTerm] = useState("");
+
     const today = new Date();
     const scrollTo = getMonthIndex(today.getMonth()) + today.getDate();
 
@@ -190,6 +192,12 @@ const ScheduleScreen = ({ navigation }) => {
                 </View>
             </Modal>    
             <Text style={styles.header}>Schedule</Text>
+            <TextInput 
+                style={styles.search}
+                value={searchTerm}
+                onChangeText={setSearchTerm}
+                placeholder="Find Date: YYYY-MM-DD"
+            />
             <View style={styles.list}>
                 <SectionList 
                     sections={DATA}
@@ -272,6 +280,12 @@ const styles = StyleSheet.create({
       exitIcon: {
           marginLeft: 210,
           
+      },
+      search: {
+        borderWidth: 1,
+        height: 30,
+        padding: 5,
+        marginHorizontal: 20
       }
 });
 
