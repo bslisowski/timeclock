@@ -92,14 +92,18 @@ const DayItem = ({ item }) => {
 
 const styles = StyleSheet.create({
     container: {
-
+        borderWidth: 1,
+        borderRadius: 10,
+        padding: 5,
+        
     },
     date: {
         fontSize: 18,
         fontWeight: 'bold',
+        padding: 5
     },
     interval: {
-        flexDirection: 'row'
+        flexDirection: 'row',
     }
 });
 

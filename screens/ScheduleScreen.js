@@ -10,9 +10,9 @@ import Calender from '../assets/dummy-data/Calender';
 import sectionListGetItemLayout from 'react-native-section-list-get-item-layout';
 import { TextInput } from 'react-native-gesture-handler';
 import { EvilIcons } from '@expo/vector-icons';
+import { Octicons } from '@expo/vector-icons';
 
 const myId = 1;
-let DATA = Calender;
 
 function getMonthIndex(month){
     switch(month){
@@ -107,10 +107,23 @@ const ScheduleScreen = ({ navigation }) => {
     const [showModal, setShowModal] = useState(false);
     const [modalItem, setModalItem] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
+    const [DATA, setDATA] = useState(Calender);
 
     const today = new Date();
     const scrollTo = getMonthIndex(today.getMonth()) + today.getDate();
 
+    const mySchedule = Shifts.filter(value => value.workerId === myId);
+        
+    DATA.forEach(month => {
+        month.data.forEach(day => {
+            mySchedule.forEach(s => {
+                if (day.date.toLocaleDateString() === s.date){
+                    day.shift = s;
+                }
+            } )
+        })
+    });
+        
     const Item = ({ item }) => {
         return (
             <Pressable onPress={() => {
@@ -123,7 +136,7 @@ const ScheduleScreen = ({ navigation }) => {
         );
     };
     
-    useEffect(() => {
+    /*useEffect(() => {
         const mySchedule = Shifts.filter(value => value.workerId === myId);
         
         DATA.forEach(month => {
@@ -136,7 +149,7 @@ const ScheduleScreen = ({ navigation }) => {
             })
         });
         
-    }, []); 
+    }, [DATA]); */
 
 
     return (
@@ -192,12 +205,15 @@ const ScheduleScreen = ({ navigation }) => {
                 </View>
             </Modal>    
             <Text style={styles.header}>Schedule</Text>
-            <TextInput 
-                style={styles.search}
-                value={searchTerm}
-                onChangeText={setSearchTerm}
-                placeholder="Find Date: YYYY-MM-DD"
-            />
+            <View style={styles.searchContainer}>
+                <Octicons name="search" size={20} color="black" />
+                <TextInput 
+                    style={styles.searchInput}
+                    value={searchTerm}
+                    onChangeText={setSearchTerm}
+                    placeholder="Find Date: YYYY-MM-DD"
+                />
+            </View>
             <View style={styles.list}>
                 <SectionList 
                     sections={DATA}
@@ -209,7 +225,7 @@ const ScheduleScreen = ({ navigation }) => {
                     initialNumToRender={9}
                     getItemLayout={sectionListGetItemLayout({
                         // The height of the row with rowData at the given sectionIndex and rowIndex
-                        getItemHeight: (rowData, sectionIndex, rowIndex) => 43,
+                        getItemHeight: (rowData, sectionIndex, rowIndex) => 67,
                    
                         // These four properties are optional
                         getSeparatorHeight: () => 1 / PixelRatio.get(), // The height of your separators
@@ -281,11 +297,17 @@ const styles = StyleSheet.create({
           marginLeft: 210,
           
       },
-      search: {
+      searchContainer: {
+        flexDirection: 'row',
         borderWidth: 1,
         height: 30,
         padding: 5,
         marginHorizontal: 20
+      },
+      searchInput: {
+          height: 30,
+          alignSelf: 'center',
+          paddingLeft: 5
       }
 });
 
