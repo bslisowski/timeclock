@@ -10,8 +10,6 @@ import Shifts from '../assets/dummy-data/Shifts';
 import Calender from '../assets/dummy-data/Calender';
 import { Auth } from 'aws-amplify';
 
-//const isManager = true;
-const myName = "Nigger";
 const myId = 1;
 const tempCalender = Calender;
 let itemRenderCount = 1;
@@ -80,11 +78,10 @@ const DashboardScreen = ({ navigation }) => {
     useEffect(() => {
         const getName = async () => {
             const user = await Auth.currentAuthenticatedUser();
-            //console.log(user);
+            
             setName(user.attributes.name);
             if (user.signInUserSession.accessToken.payload['cognito:groups'] && (user.signInUserSession.accessToken.payload['cognito:groups']).includes('MGMT')){
                 setIsManager(true);
-                console.log("I am Manager");
             }
         };
         getName();
