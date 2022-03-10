@@ -8,30 +8,15 @@ import Schedules from '../assets/dummy-data/Schedules';
 import DayItem from '../components/DayItem';
 import Shifts from '../assets/dummy-data/Shifts';
 import Calender from '../assets/dummy-data/Calender';
+import { Auth } from 'aws-amplify';
 
-const isManager = true;
+//const isManager = true;
 const myName = "Nigger";
 const myId = 1;
 const tempCalender = Calender;
 let itemRenderCount = 1;
 
-const Item = ({ item, type }) => {
-    //console.log(itemRenderCount++);
-    if (type === "Schedule"){
-        return (
-            <View style={styles.announcementContainer}>
-                <DayItem item={item}/>
-            </View>
-        );
-    }
-    else {
-        return (
-            <View style={styles.announcementContainer}>
-                <AnnouncementItem poster={item.poster} content={item.content} isManager={isManager} />
-            </View>
-        );
-    }
-};
+
 
 const Item2 = ({ item, title }) => {
     return (
@@ -89,6 +74,21 @@ function getPosition(position){
 
 const DashboardScreen = ({ navigation }) => {
 
+    const [name, setName] = useState("");
+    const [isManager, setIsManager] = useState(false);
+
+    useEffect(() => {
+        const getName = async () => {
+            const user = await Auth.currentAuthenticatedUser();
+            //console.log(user);
+            setName(user.attributes.name);
+            if ((user.signInUserSession.accessToken.payload['cognito:groups']).includes('MGMT')){
+                setIsManager(true);
+                console.log("I am Manager");
+            }
+        };
+        getName();
+    },[]);
 
     const DATA = [
         {
@@ -109,10 +109,26 @@ const DashboardScreen = ({ navigation }) => {
     
     const tomorrow = Shifts.find(shift => shift.date === (new Date(Date.now() + 86400000)).toLocaleDateString());
     
-
+    const Item = ({ item, type }) => {
+        //console.log(itemRenderCount++);
+        if (type === "Schedule"){
+            return (
+                <View style={styles.announcementContainer}>
+                    <DayItem item={item}/>
+                </View>
+            );
+        }
+        else {
+            return (
+                <View style={styles.announcementContainer}>
+                    <AnnouncementItem poster={item.poster} content={item.content} isManager={isManager} />
+                </View>
+            );
+        }
+    };
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.header}>Welcome, {myName}!</Text>
+            <Text style={styles.header}>Welcome, {name}!</Text>
             <View style={styles.todayTomorrow}>
                 <Item2 item={today} title="Today" />
                 <Item2 item={tomorrow} title="Tomorrow" />

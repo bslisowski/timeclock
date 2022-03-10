@@ -10,16 +10,23 @@ const LoginScreen = ({ navigation }) => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
     const [loggedIn, setLoggedIn] = useState(false);
+    const [user, setUser] = useState(null);
+    const [changePassword, setChangePassword] = useState(false);
 
     const onPressLogin = async () => {
 
         try {
-            await Auth.signIn(username, password);
+            setUser(await Auth.signIn(username, password));
             setError(null);
             setUsername("");
             setPassword("");
-            setLoggedIn(true);
-            navigation.navigate("Main");
+            console.log(user);
+            if (user.challengeName === 'NEW_PASSWORD_REQUIRED'){
+                setChangePassword(true);
+            } else {
+                setLoggedIn(true);
+                navigation.navigate("Main");
+            }
         } catch (err) {
             setError(err.message);
             console.log(err);
@@ -32,23 +39,51 @@ const LoginScreen = ({ navigation }) => {
             setError(null);
             setUsername("");
             setPassword("");
+            console.log("signed out");
         } catch (err) {
             setError(err.message);
             console.log(err);
         }
     };
     
+    const onPressChangePassword = async () => {
+        if (username !== password){
+            setError("Passwords do not match: 1: ", username, " 2: ", password);
+            return;
+        }
+        try {
+            await Auth.completeNewPassword(user, password);
+            setChangePassword(false);
+            setUsername("");
+            setPassword("");
+        } catch (err) {
+            console.log(err);
+        }   
+    };
+
     useEffect(() => {
         loggedIn ? onPressLogout() : null;
         setLoggedIn(false);
-    }, [loggedIn]);
+    }, []);
 
 
     return (
         <SafeAreaView >
             <View style={styles.container}>
-                <Text style={styles.headerText}>Sign In</Text>
-                <Text style={styles.text}>Username</Text>
+                <Text style={styles.headerText}>{
+                    changePassword
+                    ?
+                    "Set Password"
+                    :
+                    "Sign In"
+                }</Text>
+                <Text style={styles.text}>{
+                    changePassword
+                    ?
+                    "New Password"
+                    :
+                    "Username"
+                }</Text>
                 <TextInput 
                     style={styles.input}
                     value={username}
@@ -56,7 +91,13 @@ const LoginScreen = ({ navigation }) => {
                     autoCapitalize='none'
                     autoCorrect={false}
                 />
-                <Text style={styles.text}>Password</Text>
+                <Text style={styles.text}>{
+                    changePassword
+                    ?
+                    "Confirm New Password"
+                    :
+                    "Password"
+                }</Text>
                 <TextInput 
                     style={styles.input}
                     value={password}
@@ -80,18 +121,33 @@ const LoginScreen = ({ navigation }) => {
                     :
                     null
                 }
-                <TouchableOpacity
-                    style={styles.buttons}
-                    onPress={onPressLogin}
-                >
-                    <Text style={styles.buttonText}>SIGN IN</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.buttons}
-                    onPress={onPressLogout}
-                >
-                    <Text style={styles.buttonText}>SIGN OUT</Text>
-                </TouchableOpacity>
+                {
+                    changePassword
+                    ?
+                    <View>
+                        <TouchableOpacity
+                            style={styles.buttons}
+                            onPress={onPressChangePassword}
+                        >
+                            <Text style={styles.buttonText}>Set Password</Text>
+                        </TouchableOpacity>
+                    </View>
+                    :
+                    <View>
+                        <TouchableOpacity
+                            style={styles.buttons}
+                            onPress={onPressLogin}
+                        >
+                            <Text style={styles.buttonText}>SIGN IN</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.buttons}
+                            onPress={onPressLogout}
+                        >
+                            <Text style={styles.buttonText}>SIGN OUT</Text>
+                        </TouchableOpacity>
+                    </View>
+                }
             </View>
         </SafeAreaView>
     );
