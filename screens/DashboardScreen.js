@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, StyleSheet, View, SectionList, Pressable } from 'react-native';
+import { Text, StyleSheet, View, SectionList, Pressable, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Announcements from '../assets/dummy-data/Announcements';
 import AnnouncementItem from '../components/AnnouncementItem';
@@ -82,13 +82,36 @@ const DashboardScreen = ({ navigation }) => {
             const user = await Auth.currentAuthenticatedUser();
             //console.log(user);
             setName(user.attributes.name);
-            if ((user.signInUserSession.accessToken.payload['cognito:groups']).includes('MGMT')){
+            if (user.signInUserSession.accessToken.payload['cognito:groups'] && (user.signInUserSession.accessToken.payload['cognito:groups']).includes('MGMT')){
                 setIsManager(true);
                 console.log("I am Manager");
             }
         };
         getName();
     },[]);
+
+    useEffect(() => navigation.addListener('beforeRemove', (e) => {
+        e.preventDefault();
+        Alert.alert(
+            "Sign Out?",
+            null,
+            [
+                {
+                    text: "Sign Out",
+                    onPress: async () => {
+                        await Auth.signOut({ global: true })
+                            .then(() => navigation.dispatch(e.data.action))
+
+                    },
+                },
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("cancel pressed"),
+                    style: 'cancel'
+                }
+            ]
+        );
+    }), [navigation]);
 
     const DATA = [
         {

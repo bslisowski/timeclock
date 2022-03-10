@@ -16,17 +16,19 @@ const LoginScreen = ({ navigation }) => {
     const onPressLogin = async () => {
 
         try {
-            setUser(await Auth.signIn(username, password));
-            setError(null);
-            setUsername("");
-            setPassword("");
-            console.log(user);
-            if (user.challengeName === 'NEW_PASSWORD_REQUIRED'){
-                setChangePassword(true);
-            } else {
-                setLoggedIn(true);
-                navigation.navigate("Main");
-            }
+            await Auth.signIn(username, password).then(user => {
+                setUser(user);
+                setError(null);
+                setUsername("");
+                setPassword("");
+                if (user.challengeName && user.challengeName === 'NEW_PASSWORD_REQUIRED'){
+                    setChangePassword(true);
+                } else {
+                    setLoggedIn(true);
+                    navigation.navigate("Main");
+                }
+            });
+            
         } catch (err) {
             setError(err.message);
             console.log(err);
