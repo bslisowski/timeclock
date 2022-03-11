@@ -14,7 +14,9 @@ import { Text,
         PixelRatio, 
         Pressable, 
         Modal, 
-        TextInput 
+        TextInput,
+        FlatList,
+        Button
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Workers from '../assets/dummy-data/Workers';
@@ -22,11 +24,12 @@ import Shifts from '../assets/dummy-data/Shifts';
 import Schedules from '../assets/dummy-data/Schedules';
 import DayItem from '../components/DayItem';
 import Calender from '../assets/dummy-data/Calender';
-import sectionListGetItemLayout from 'react-native-section-list-get-item-layout';
 import { EvilIcons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 
 const myId = 1;
+const dayToMs = 86400000;
+const weekToMs = dayToMs*7;
 
 function getMonthIndex(month){
     switch(month){
@@ -59,130 +62,86 @@ function getMonthIndex(month){
     }
 };
 
-function getDay(day){
-    switch(day){
-        case 0:
-            return "Sunday";
-        case 1:
-            return "Monday";
-        case 2:
-            return "Tuesday";
-        case 3:
-            return "Wednesday";
-        case 4:
-            return "Thursday";
-        case 5:
-            return "Friday";
-        case 6:
-            return "Saturday";
-        default:
-            return "Error";
+function changeDATA(id){
+    let schedule;
+    if (id === 0){
+        const date = (new Date()).getTime();
+        schedule = Schedules.find((s) => s.startDate < date && s.endDate > date);
+    } else {
+        schedule = Schedules.find((s) => s.id === id);
     }
+    const tempData = Calender.filter(value => 
+        value.date.getTime() >= schedule.startDate && value.date.getTime() <= schedule.endDate
+    );
+
+    const myShifts = Shifts.filter(value => value.scheduleId === schedule.id && value.workerId === myId);
+    
+    tempData.forEach((day) => {
+        day.shift = myShifts.find(s => day.date.toLocaleDateString() === s.date);
+    });
+    return tempData;
 };
 
-function getTime(day){
-    let hour = day.getUTCHours() - (day.getTimezoneOffset()/60);
-    if (hour > 12){
-        hour -= 12;
-    }
-    let minutes = day.getUTCMinutes();
-    if (minutes < 10){
-        return hour + ":0" + minutes;
-    }
-    else {
-        return hour + ":" + minutes;
-    }  
-}
-
-function getPosition(position){
-    switch (position){
-        case "BP":
-            return "Pretzels";
-        case "BB":
-            return "Baker";
-        case "BC":
-            return "Bakery Cashier";
-        case "BF": 
-            return "Bakery Floater";
-        case "MC":
-            return "Meat Cashier";
-        case "MCk": 
-            return "Cook";
-        case "MB":
-            return "Butcher";
-        case "MP":
-            return "Produce";
-        default:
-            return "Shit";
-    }
-}
-
 const ScheduleScreen = ({ navigation }) => {
-    //const [showModal, setShowModal] = useState(false);
-    //const [dayItem, setDayItem] = useState(null);
+    
     const [searchTerm, setSearchTerm] = useState("");
-    const [DATA, setDATA] = useState(Calender);
+    const [DATA, setDATA] = useState({ data: [], currId: -1});
+    
+    useEffect(() => {
+        //console.log(Schedules);
+        const date = (new Date()).getTime();
+        const tempId = (Schedules.find((s) => s.startDate < date && s.endDate > date)).id;
+        setDATA({ data: changeDATA(tempId), currId: tempId});
+    }, []);
+    /*
+    let DATA = Calender.filter(value => 
+        value.date.getTime() >= schedule.startDate && value.date.getTime() <= schedule.endDate)
+    ;
 
-    const today = new Date();
-    const scrollTo = getMonthIndex(today.getMonth()) + today.getDate();
-
-    const mySchedule = Shifts.filter(value => value.workerId === myId);
-        
-    DATA.forEach(month => {
-        month.data.forEach(day => {
-            mySchedule.forEach(s => {
-                if (day.date.toLocaleDateString() === s.date){
-                    day.shift = s;
-                }
-            } )
-        })
-    });
-        
+    const mySchedule = Shifts.filter(value => value.scheduleId === schedule.id && value.workerId === myId);
+    
+    DATA.forEach((day) => {
+        day.shift = mySchedule.find(s => day.date.LocaleDateString() === s.date);
+    });*/
+    
     const Item = ({ item }) => {
-        //setDayItem(item);
         return (
             <DayItem item={item} onPress={dayItemOnPress}/>
         );
     };
 
-    const dayItemOnPress = (item) => {
+    const dayItemOnPress = (date) => {
         console.log("hi");
-        navigation.navigate("Day", { item });
+        //navigation.navigate("Day", { item: date });
+    };
+
+    const onPress = (id) => {
+        if (id === 0 || id >= Schedules.length){
+            return;
+        }
+        setDATA({ data: changeDATA(id), currId: id}) 
     };
 
     return (
-        <SafeAreaView>         
+        <SafeAreaView style={styles.container}>         
             <Text style={styles.header}>Schedule</Text>
-            <View style={styles.searchContainer}>
-                <Octicons name="search" size={20} color="black" />
-                <TextInput 
-                    style={styles.searchInput}
-                    value={searchTerm}
-                    onChangeText={setSearchTerm}
-                    placeholder="Find Date: YYYY-MM-DD"
+            <View style={styles.buttonContainer}>
+                <Button 
+                    style={styles.button}
+                    title="Prev."
+                    onPress={() => onPress(DATA.currId - 1)}
+                />
+                <Button 
+                    style={styles.button}
+                    title="Next"
+                    onPress={() => onPress(DATA.currId + 1)}
                 />
             </View>
             <View style={styles.list}>
-                <SectionList 
-                    sections={DATA}
-                    keyExtractor={item => item.id}
+                <FlatList
+                    data={DATA.data}
                     renderItem={({ item }) => <Item item={item} />}
-                    renderSectionHeader={({ section: { title } }) => (
-                            <Text style={styles.sectionHeader}>{title}</Text>
-                    )}
-                    initialNumToRender={9}
-                    getItemLayout={sectionListGetItemLayout({
-                        // The height of the row with rowData at the given sectionIndex and rowIndex
-                        getItemHeight: (rowData, sectionIndex, rowIndex) => 67,
-                   
-                        // These four properties are optional
-                        getSeparatorHeight: () => 1 / PixelRatio.get(), // The height of your separators
-                        getSectionHeaderHeight: () => 57, // The height of your section headers
-                        getSectionFooterHeight: () => 0, // The height of your section footers
-                        
-                    })}
-                    initialScrollIndex={scrollTo}
-                    removeClippedSubviews={true}
+                    keyExtractor={item => item.id}
                 />
             </View>
         </SafeAreaView>
@@ -190,71 +149,32 @@ const ScheduleScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        flexDirection: 'column'
+    },
     header: {
         fontSize: 30,
         fontWeight: 'bold',
         textAlign: 'center',
-        marginVertical: 20
+        marginTop: 20,
+        flex: 1
     },
     list: {
         alignSelf: 'center',
-        width: '75%'
+        width: '75%',
+        height: '90%',
+        flex: 15
     },
-    sectionHeader: {
-        fontSize: 20,
-        fontWeight: "bold",
-        marginVertical: 15,
-    },
-    centeredView: {
+    buttonContainer: {
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 22
-      },
-      modalView: {
-        margin: 20,
-        backgroundColor: "white",
-        borderRadius: 50,
-        padding: 20,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-          width: 0,
-          height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5
-      },
-      modalTitle: {
-          flexDirection: 'row',
-          alignItems: 'center',
-      },
-      requestView: {
-          margin: 15
-      },
-      requestInput: {
-          marginTop: 10,
-        borderWidth: 1,
-        height: 30,
-        padding: 5
-      },
-      exitIcon: {
-          marginLeft: 210,
-          
-      },
-      searchContainer: {
         flexDirection: 'row',
-        borderWidth: 1,
-        height: 30,
-        padding: 5,
-        marginHorizontal: 20
-      },
-      searchInput: {
-          height: 30,
-          alignSelf: 'center',
-          paddingLeft: 5
-      }
+        justifyContent: 'space-around',
+        marginVertical: 10,
+    },
+    button: {
+
+    }
 });
 
 export default ScheduleScreen;

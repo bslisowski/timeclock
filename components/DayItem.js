@@ -60,10 +60,13 @@ function getDay(day){
     }
 }
 
-const DayItem = ({ item, onPress }) => {
+const DayItem = (props) => {
+    const { item, onPress } = props;
+
     const dayOfWeek = getDay(item.day);
     const date = item.date.toLocaleDateString();
 
+    
     if (item.shift) {
         const day = new Date(item.shift.startTime);
         const startTime = getTime(day);
@@ -73,7 +76,11 @@ const DayItem = ({ item, onPress }) => {
         return (
             <SafeAreaView>
                 <Pressable
-                    onPress={() => onPress(item)}
+                    onPress={() => {
+                        //event.persist();
+                        //console.log("item = ", item);
+                        onPress(item);
+                    }}
                 >
                     <View style={styles.container}>
                         <Text style={styles.date}>{dayOfWeek} {date}</Text>

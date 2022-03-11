@@ -56,7 +56,7 @@ function ScheduleNav(){
       headerShown: false
     }}>
       <Stack.Screen name="Sched" component={ScheduleScreen}/>
-      <Stack.Screen name="Day" component={DayScreen}/>     
+      <Stack.Screen name="Day" component={DayScreen} />     
     </Stack.Navigator>
   );
 };

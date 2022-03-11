@@ -4,11 +4,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const DayScreen = ({ route, navigation }) => {
     const { item } = route.params;
-
+    //console.log(route.params);
+    //console.log("\n\n", item);
     return (
         <SafeAreaView>
             <Text style={styles.header }>Day Screen</Text>
-            <Text style={styles.header2} >{item.date.toLocaleDateString()}</Text>
+            <Text style={styles.header2} >{ item ? item.date.toLocaleDateString() : "errur"}</Text>
         </SafeAreaView>
     );
 };
