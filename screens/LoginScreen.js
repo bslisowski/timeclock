@@ -1,14 +1,16 @@
 /*
         TODO:
-                -show password
+                
 */
 
 
 
 import React, { useState, useEffect } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity, TextInput } from 'react-native';
+import { Text, StyleSheet, View, TouchableOpacity, TextInput, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Auth } from 'aws-amplify';
+import { Entypo } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 const lambdaError = "Custom auth lambda trigger is not configured for the user pool.";
 
@@ -18,10 +20,9 @@ const LoginScreen = ({ navigation }) => {
     const [error, setError] = useState(null);
     const [user, setUser] = useState(null);
     const [changePassword, setChangePassword] = useState(false);
-
+    const [showPass, setShowPass] = useState(true);
 
     const onPressLogin = async () => {
-
         try {
             await Auth.signIn(username, password).then(user => {
                 setUser(user);
@@ -33,8 +34,7 @@ const LoginScreen = ({ navigation }) => {
                 } else {
                     navigation.navigate("Main");
                 }
-            });
-            
+            });  
         } catch (err) {
             setError(err.message);
             console.log(err);
@@ -81,7 +81,7 @@ const LoginScreen = ({ navigation }) => {
         try {
             await Auth.currentAuthenticatedUser().then((user) => navigation.navigate("Main"));
         } catch (error) {
-            console.log("ERROR: ", error);
+            
         }
     }, []);
 
@@ -104,7 +104,7 @@ const LoginScreen = ({ navigation }) => {
                     "Username"
                 }</Text>
                 <TextInput 
-                    style={styles.input}
+                    style={styles.username}
                     value={username}
                     onChangeText={setUsername}
                     onEndEditing={onEndEditing}
@@ -118,15 +118,26 @@ const LoginScreen = ({ navigation }) => {
                     :
                     "Password"
                 }</Text>
-                <TextInput 
-                    style={styles.input}
-                    value={password}
-                    onChangeText={setPassword}
-                    onEndEditing={onEndEditing}
-                    secureTextEntry={true}
-                    autoCapitalize='none'
-                    autoCorrect={false}
-                />
+                <View style={styles.passwordContainer}>
+                    <TextInput 
+                        style={styles.password}
+                        value={password}
+                        onChangeText={setPassword}
+                        onEndEditing={onEndEditing}
+                        secureTextEntry={showPass}
+                        autoCapitalize='none'
+                        autoCorrect={false}
+                    />
+                    <Pressable onPress={() => setShowPass(!showPass)}>
+                        {
+                            showPass
+                            ?
+                            <Ionicons name="eye-off-outline" size={24} color="#c5c9c6" />
+                            :
+                            <Ionicons name="eye-outline" size={24} color="grey" />
+                        }
+                    </Pressable>
+                </View>
                 {
                     error
                     ?
@@ -186,12 +197,16 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         alignSelf: 'center',
     },
-    input: {
+    username: {
         borderWidth: 1,
         padding: 10,
         width: "75%",
         alignSelf: 'center',
         marginVertical: 10
+    },
+    password: {
+        padding: 10,
+        flex: 5
     },
     text: {
         marginLeft: 50,
@@ -210,7 +225,17 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 30,
         marginBottom: 100
-    }
+    },
+    passwordContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignSelf: 'center',
+        width: "75%",
+        borderWidth: 1,
+        borderColor: 'black',
+        marginVertical: 10,
+        paddingHorizontal: 10
+    },
 });
 
 export default LoginScreen;
