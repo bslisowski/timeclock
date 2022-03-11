@@ -23,7 +23,6 @@ const Stack = createStackNavigator();
 
 function LoginNav() {
   const Tab = createBottomTabNavigator();
-  Auth.currentAuthenticatedUser().then(console.log);
   return (
     <Tab.Navigator screenOptions={{
     headerShown: false

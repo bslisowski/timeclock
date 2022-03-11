@@ -53,28 +53,13 @@
       ]
     },
     "breakCircularDependency": true,
-    "dependsOn": [
-      {
-        "category": "function",
-        "resourceName": "timeclockPostConfirmation",
-        "triggerProvider": "Cognito",
-        "attributes": [
-          "Arn",
-          "Name"
-        ]
-      }
-    ],
+    "dependsOn": [],
     "hostedUI": false,
-    "triggers": {
-      "PostConfirmation": [
-        "custom"
-      ]
-    },
+    "triggers": {},
     "authProviders": [],
     "parentStack": {
       "Ref": "AWS::StackId"
     },
-    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PostConfirmation\",\n    \"lambdaFunctionName\": \"timeclockPostConfirmation\"\n  }\n]",
     "permissions": [],
     "thirdPartyAuth": false
   }

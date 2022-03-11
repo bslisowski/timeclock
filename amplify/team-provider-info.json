@@ -15,12 +15,6 @@
     "categories": {
       "auth": {
         "timeclock": {}
-      },
-      "function": {
-        "timeclockPostConfirmation": {
-          "deploymentBucketName": "amplify-timeclock-dev-133352-deployment",
-          "s3Key": "amplify-builds/timeclockPostConfirmation-4542505567424a656163-build.zip"
-        }
       }
     }
   }

@@ -80,7 +80,7 @@ const DashboardScreen = ({ navigation }) => {
             const user = await Auth.currentAuthenticatedUser();
             
             setName(user.attributes.name);
-            if (user.signInUserSession.accessToken.payload['cognito:groups'] && (user.signInUserSession.accessToken.payload['cognito:groups']).includes('MGMT')){
+            if (user?.signInUserSession?.accessToken?.payload['cognito:groups']?.includes('MGMT')){
                 setIsManager(true);
             }
         };

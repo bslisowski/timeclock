@@ -3,17 +3,6 @@
     "timeclock": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "timeclockPostConfirmation",
-          "triggerProvider": "Cognito",
-          "attributes": [
-            "Arn",
-            "Name"
-          ]
-        }
-      ],
       "customAuth": false,
       "frontendAuthConfig": {
         "socialProviders": [],
@@ -38,7 +27,8 @@
         "verificationMechanisms": [
           "EMAIL"
         ]
-      }
+      },
+      "dependsOn": []
     }
   },
   "api": {
@@ -63,11 +53,5 @@
       }
     }
   },
-  "function": {
-    "timeclockPostConfirmation": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    }
-  }
+  "function": {}
 }
