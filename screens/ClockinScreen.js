@@ -12,9 +12,9 @@ const ClockinScreen = () => {
     const [timeOutHour, setTimeOutHour] = useState(0);
     const [timeOutMinute, setTimeOutMinute] = useState(0);
     const [statusMessage, setStatusMessage] = useState("Clock In");
-    const storeLocation = { latitude: 40.007508, longitude: -75.285957 };
+    const storeLocation = { latitude: 40.003172, longitude: -75.293601 };
 
-
+    // 40.00317288735443, -75.29360148887137
     const pressClock = async () => {
         const time = new Date();
         
@@ -41,18 +41,22 @@ const ClockinScreen = () => {
                             setStatusMessage("Clock In");
                         } 
                         else {
-                            setTimeInHour(time.getHours());
-                            setTimeInMinute(time.getMinutes());
-                            setStatusMessage("Clocked in at: ", timeInHour%12 + 1, ":", timeInMinute, " ", (timeInHour > 12 ? "PM" : "AM"));
+                            const tempHour = time.getHours();
+                            setTimeInHour(tempHour);
+                            const tempMinute = time.getMinutes()
+                            setTimeInMinute(tempMinute);
+                            setStatusMessage("Clocked in at: ", tempHour%12 + 1, ":", tempMinute, " ", (tempHour > 12 ? "PM" : "AM"));
                         }
                         setClockedIn(!clockedIn);
                     }
                 );
             });
+    };
+
+    const onPress = () => {
 
     };
 
-    
     return (
         <SafeAreaView >
             <View style={styles.btnContainer}>
@@ -75,6 +79,7 @@ const ClockinScreen = () => {
                     <Text style={[styles.textStyle, statusMessage === "Too Far From Store" ? styles.tooFar : null]}>{statusMessage}</Text>
                 }
             </View>
+            
         </SafeAreaView>
     );
 };

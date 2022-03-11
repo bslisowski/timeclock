@@ -1,0 +1,23 @@
+announcements:
+    id, date, pinned, userId, subject, body
+
+user:
+    id, firstName, lastName, phoneNum, companyId
+
+company:
+    id, name, latitude, longitude 
+
+schedule:
+    id, startDate, endDate?
+
+shift:
+    id, userId, scheduleId, positionId, startTime, endTime, inTime, outTime, totalTime
+
+position:
+    id, companyId, name 
+
+requests:
+    id, userId, type: (reqOff || swap), day: (if reqOff), shift1: (if swap), 
+    shift2: (if swap; optional), description, accepted
+
+

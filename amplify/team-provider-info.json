@@ -9,11 +9,18 @@
       "UnauthRoleName": "amplify-timeclock-dev-133352-unauthRole",
       "StackName": "amplify-timeclock-dev-133352",
       "StackId": "arn:aws:cloudformation:us-east-1:185607312129:stack/amplify-timeclock-dev-133352/2c7391e0-998e-11ec-84d4-0a846f7aa1d5",
-      "AmplifyAppId": "d23jxrip0gwmc7"
+      "AmplifyAppId": "d23jxrip0gwmc7",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-timeclock-dev-133352-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
     },
     "categories": {
       "auth": {
         "timeclock": {}
+      },
+      "function": {
+        "timeclockPostConfirmation": {
+          "deploymentBucketName": "amplify-timeclock-dev-133352-deployment",
+          "s3Key": "amplify-builds/timeclockPostConfirmation-71772f5376332b514e2f-build.zip"
+        }
       }
     }
   }

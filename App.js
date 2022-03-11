@@ -9,6 +9,7 @@ import ProfileScreen from './screens/ProfileScreen';
 import ScheduleScreen from './screens/ScheduleScreen';
 import ClockinScreen from './screens/ClockinScreen';
 import CreateAnnouncementScreen from './screens/CreateAnnouncementScreen';
+import DayScreen from './screens/DayScreen';
 import 'react-native-gesture-handler';
 
 import Amplify from 'aws-amplify'
@@ -27,7 +28,7 @@ function LoginNav() {
     headerShown: false
   }}>
           <Tab.Screen name="Dashboard" component={DashboardNav}/>
-          <Tab.Screen name="Schedule" component={ScheduleScreen}/>
+          <Tab.Screen name="Schedule" component={ScheduleNav}/>
           <Tab.Screen name="Clock" component={ClockinScreen}/>
           <Tab.Screen name="Profile" component={ProfileScreen}/>
       </Tab.Navigator>
@@ -43,6 +44,19 @@ function DashboardNav(){
     }}>
       <Stack.Screen name="Dash" component={DashboardScreen}/>
       <Stack.Screen name="Create" component={CreateAnnouncementScreen}/>     
+    </Stack.Navigator>
+  );
+};
+
+function ScheduleNav(){
+  const Stack = createStackNavigator();
+
+  return (
+    <Stack.Navigator screenOptions={{
+      headerShown: false
+    }}>
+      <Stack.Screen name="Sched" component={ScheduleScreen}/>
+      <Stack.Screen name="Day" component={DayScreen}/>     
     </Stack.Navigator>
   );
 };

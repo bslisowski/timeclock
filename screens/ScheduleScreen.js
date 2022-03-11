@@ -1,6 +1,21 @@
+/*
+        TODO:
+                -schedule screen lists current week
+                    -buttons to go back/forward a week
+                -enable search
+                -navigate to day screen
+*/
+
 import React, { useState, useEffect } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-import { Text, StyleSheet, View, FlatList, SectionList, PixelRatio, Pressable, Modal } from 'react-native';
+import { Text, 
+        StyleSheet, 
+        View, 
+        SectionList, 
+        PixelRatio, 
+        Pressable, 
+        Modal, 
+        TextInput 
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Workers from '../assets/dummy-data/Workers';
 import Shifts from '../assets/dummy-data/Shifts';
@@ -8,7 +23,6 @@ import Schedules from '../assets/dummy-data/Schedules';
 import DayItem from '../components/DayItem';
 import Calender from '../assets/dummy-data/Calender';
 import sectionListGetItemLayout from 'react-native-section-list-get-item-layout';
-import { TextInput } from 'react-native-gesture-handler';
 import { EvilIcons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 
@@ -104,8 +118,8 @@ function getPosition(position){
 }
 
 const ScheduleScreen = ({ navigation }) => {
-    const [showModal, setShowModal] = useState(false);
-    const [modalItem, setModalItem] = useState(null);
+    //const [showModal, setShowModal] = useState(false);
+    //const [dayItem, setDayItem] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [DATA, setDATA] = useState(Calender);
 
@@ -125,85 +139,19 @@ const ScheduleScreen = ({ navigation }) => {
     });
         
     const Item = ({ item }) => {
+        //setDayItem(item);
         return (
-            <Pressable onPress={() => {
-                setShowModal(!showModal);
-                setModalItem(item);
-                }
-            }>
-                <DayItem item={item}/>
-            </Pressable>
+            <DayItem item={item} onPress={dayItemOnPress}/>
         );
     };
-    
-    /*useEffect(() => {
-        const mySchedule = Shifts.filter(value => value.workerId === myId);
-        
-        DATA.forEach(month => {
-            month.data.forEach(day => {
-                mySchedule.forEach(s => {
-                    if (day.date.toLocaleDateString() === s.date){
-                        day.shift = s;
-                    }
-                } )
-            })
-        });
-        
-    }, [DATA]); */
 
+    const dayItemOnPress = (item) => {
+        console.log("hi");
+        navigation.navigate("Day", { item });
+    };
 
     return (
-        <SafeAreaView>
-            <Modal 
-                animationType="slide"
-                visible={showModal}
-                transparent={true}
-                onRequestClose={() => {
-                    console.log("onRequestClose");
-                    setShowModal(!showModal);
-                }}
-            >
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <Pressable onPress={() => setShowModal(false)}>
-                            <EvilIcons 
-                                name="close" 
-                                size={24} 
-                                color="black" 
-                                style={styles.exitIcon}
-                            />
-                        </Pressable>
-                        {
-                            modalItem
-                            ?
-                            <View>
-                                <View style={styles.modalTitle}>
-                                    <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{getDay(modalItem.day)} </Text>
-                                    <Text>{modalItem.date.toLocaleDateString()}</Text>
-                                </View>
-                                <View>
-                                    {modalItem.shift
-                                        ?
-                                        <Text>{getPosition(modalItem.shift.position)} {getTime((new Date(modalItem.shift.startTime)))} - {getTime((new Date(modalItem.shift.endTime)))}</Text>
-                                        : 
-                                        <Text>Day off :)</Text>
-                                    }
-                                </View>
-                                <View style={styles.requestView}>
-                                    <Text>Request off ◯    Request change ◯</Text>
-                                    <TextInput 
-                                        style={styles.requestInput}
-                                        placeholder="Details"
-                                        multiline={true}
-                                    />
-                                </View>
-                            </View>
-                            : 
-                            null
-                        }
-                    </View>
-                </View>
-            </Modal>    
+        <SafeAreaView>         
             <Text style={styles.header}>Schedule</Text>
             <View style={styles.searchContainer}>
                 <Octicons name="search" size={20} color="black" />
@@ -236,9 +184,7 @@ const ScheduleScreen = ({ navigation }) => {
                     initialScrollIndex={scrollTo}
                     removeClippedSubviews={true}
                 />
-
             </View>
-            
         </SafeAreaView>
     );
 };

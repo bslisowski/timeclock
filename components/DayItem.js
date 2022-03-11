@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 function getTime(day){
@@ -60,7 +60,7 @@ function getDay(day){
     }
 }
 
-const DayItem = ({ item }) => {
+const DayItem = ({ item, onPress }) => {
     const dayOfWeek = getDay(item.day);
     const date = item.date.toLocaleDateString();
 
@@ -72,19 +72,27 @@ const DayItem = ({ item }) => {
         const position = getPosition(item.shift.position);
         return (
             <SafeAreaView>
-                <View style={styles.container}>
-                    <Text style={styles.date}>{dayOfWeek} {date}</Text>
-                    <Text>{position}    {startTime} - {endTime}</Text>
-                </View>
+                <Pressable
+                    onPress={() => onPress(item)}
+                >
+                    <View style={styles.container}>
+                        <Text style={styles.date}>{dayOfWeek} {date}</Text>
+                        <Text>{position}    {startTime} - {endTime}</Text>
+                    </View>
+                </Pressable>
             </SafeAreaView>
         );
     } else {
         return (
             <SafeAreaView>
-                <View style={styles.container} >
-                    <Text style={styles.date}>{dayOfWeek} {date}</Text>
-                    <Text>Day off!! :)</Text>
-                </View>
+                <Pressable
+                    onPress={onPress}
+                >
+                    <View style={styles.container} >
+                        <Text style={styles.date}>{dayOfWeek} {date}</Text>
+                        <Text>Day off!! :)</Text>
+                    </View>
+                </Pressable>
             </SafeAreaView>
         );
     }

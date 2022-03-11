@@ -54,7 +54,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         marginTop: 75,
-        backgroundColor: 'red'
     },
     subject: {
         borderWidth: 2,
@@ -67,7 +66,7 @@ const styles = StyleSheet.create({
         height: '50%'
     }, 
     submit: {
-
+        
     },
     checkBoxContainer: {
         flexDirection: 'row',

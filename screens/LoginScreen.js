@@ -1,3 +1,10 @@
+/*
+        TODO:
+                -show password
+*/
+
+
+
 import React, { useState, useEffect } from 'react';
 import { Text, StyleSheet, View, TouchableOpacity, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,9 +16,9 @@ const LoginScreen = ({ navigation }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
-    const [loggedIn, setLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
     const [changePassword, setChangePassword] = useState(false);
+
 
     const onPressLogin = async () => {
 
@@ -24,7 +31,6 @@ const LoginScreen = ({ navigation }) => {
                 if (user.challengeName && user.challengeName === 'NEW_PASSWORD_REQUIRED'){
                     setChangePassword(true);
                 } else {
-                    setLoggedIn(true);
                     navigation.navigate("Main");
                 }
             });
@@ -63,9 +69,20 @@ const LoginScreen = ({ navigation }) => {
         }   
     };
 
-    useEffect(() => {
-        loggedIn ? onPressLogout() : null;
-        setLoggedIn(false);
+    const onEndEditing = () => {
+        console.log("onEndEditing");
+        if (username && password){
+            console.log("username && password");
+            onPressLogin();
+        }
+    };
+
+    useEffect(async () => {
+        try {
+            await Auth.currentAuthenticatedUser().then((user) => navigation.navigate("Main"));
+        } catch (error) {
+            console.log("ERROR: ", error);
+        }
     }, []);
 
 
@@ -90,6 +107,7 @@ const LoginScreen = ({ navigation }) => {
                     style={styles.input}
                     value={username}
                     onChangeText={setUsername}
+                    onEndEditing={onEndEditing}
                     autoCapitalize='none'
                     autoCorrect={false}
                 />
@@ -104,6 +122,7 @@ const LoginScreen = ({ navigation }) => {
                     style={styles.input}
                     value={password}
                     onChangeText={setPassword}
+                    onEndEditing={onEndEditing}
                     secureTextEntry={true}
                     autoCapitalize='none'
                     autoCorrect={false}

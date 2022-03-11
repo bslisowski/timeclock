@@ -1,8 +1,6 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "testAuthIdentityPool",
-    "allowUnauthenticatedIdentities": false,
     "resourceNameTruncated": "timecl045b9539",
     "userPoolName": "timeclock",
     "autoVerifiedAttributes": [
@@ -32,9 +30,9 @@
     "userpoolClientSetAttributes": false,
     "sharedId": "045b9539",
     "resourceName": "timeclock",
-    "authSelections": "identityPoolAndUserPool",
+    "authSelections": "userPoolOnly",
     "serviceName": "Cognito",
-    "useDefault": "default",
+    "useDefault": "manual",
     "userPoolGroups": false,
     "userPoolGroupList": [],
     "adminQueries": false,
@@ -53,8 +51,28 @@
       ]
     },
     "breakCircularDependency": true,
-    "dependsOn": [],
+    "dependsOn": [
+      {
+        "category": "function",
+        "resourceName": "timeclockPostConfirmation",
+        "triggerProvider": "Cognito",
+        "attributes": [
+          "Arn",
+          "Name"
+        ]
+      }
+    ],
     "hostedUI": false,
-    "authProviders": []
+    "triggers": {
+      "PostConfirmation": [
+        "custom"
+      ]
+    },
+    "authProviders": [],
+    "parentStack": {
+      "Ref": "AWS::StackId"
+    },
+    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PostConfirmation\",\n    \"lambdaFunctionName\": \"timeclockPostConfirmation\"\n  }\n]",
+    "permissions": []
   }
 }
