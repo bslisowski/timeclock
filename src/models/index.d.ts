@@ -40,6 +40,9 @@ export declare class Shift {
   readonly position?: string;
   readonly userID: string;
   readonly scheduleID: string;
+  readonly inTime?: number;
+  readonly outTime?: number;
+  readonly totalTime?: number;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Shift, ShiftMetaData>);
@@ -65,6 +68,7 @@ export declare class User {
   readonly isManager: boolean;
   readonly Shifts?: (Shift | null)[];
   readonly Announcements?: (Announcement | null)[];
+  readonly imageURI?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<User, UserMetaData>);

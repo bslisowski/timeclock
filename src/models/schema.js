@@ -141,6 +141,27 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "inTime": {
+                    "name": "inTime",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "outTime": {
+                    "name": "outTime",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "totalTime": {
+                    "name": "totalTime",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -347,6 +368,13 @@ export const schema = {
                         "associatedWith": "userID"
                     }
                 },
+                "imageURI": {
+                    "name": "imageURI",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -392,5 +420,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "142d2885c810ab595614c1487a6355b6"
+    "version": "7eb3e2c2fddf8ce5474e23eae317da3c"
 };

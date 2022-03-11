@@ -12,7 +12,7 @@ import CreateAnnouncementScreen from './screens/CreateAnnouncementScreen';
 import DayScreen from './screens/DayScreen';
 import 'react-native-gesture-handler';
 
-import Amplify from 'aws-amplify'
+import Amplify, { Auth } from 'aws-amplify'
 import awsconfig from './src/aws-exports'
 import { withAuthenticator } from 'aws-amplify-react-native';
 import useCachedResources from './hooks/useCachedResources';
@@ -23,6 +23,7 @@ const Stack = createStackNavigator();
 
 function LoginNav() {
   const Tab = createBottomTabNavigator();
+  Auth.currentAuthenticatedUser().then(console.log);
   return (
     <Tab.Navigator screenOptions={{
     headerShown: false

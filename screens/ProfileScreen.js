@@ -2,12 +2,15 @@ import React from 'react';
 import { Text, StyleSheet, View, Button } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Auth } from 'aws-amplify';
+import { StackActions } from '@react-navigation/native';
 
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ navigation }) => {
     const onPressLogout = async () => {
         try {
-            await Auth.signOut({ global: true });
+            await Auth.signOut({ global: true }).then(() => {
+                navigation.dispatch(StackActions.popToTop());
+            });
           } catch (error) {
             console.log('error signing out: ', error);
           }

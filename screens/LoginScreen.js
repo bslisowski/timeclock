@@ -1,6 +1,6 @@
 /*
         TODO:
-                
+                -make logo into component
 */
 
 
@@ -10,6 +10,8 @@ import { Text, StyleSheet, View, TouchableOpacity, TextInput, Pressable } from '
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Auth } from 'aws-amplify';
 import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 const lambdaError = "Custom auth lambda trigger is not configured for the user pool.";
 
@@ -69,9 +71,7 @@ const LoginScreen = ({ navigation }) => {
     };
 
     const onEndEditing = () => {
-        console.log("onEndEditing");
         if (username && password){
-            console.log("username && password");
             onPressLogin();
         }
     };
@@ -87,6 +87,10 @@ const LoginScreen = ({ navigation }) => {
 
     return (
         <SafeAreaView >
+            <View style={styles.logoContainer}>
+                    <MaterialCommunityIcons name="lambda" size={80} color="#fb7e14" />
+                    <AntDesign name="clockcircleo" size={80} color="black" />
+            </View>
             <View style={styles.container}>
                 <Text style={styles.headerText}>{
                     changePassword
@@ -186,7 +190,7 @@ const LoginScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 150
+        marginTop: 50
     },
     buttons: {
         borderWidth: 1,
@@ -220,10 +224,11 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     headerText: {
-        alignSelf: 'center',
+        //alignSelf: 'center',
+        marginLeft: 50,
         fontWeight: 'bold',
-        fontSize: 30,
-        marginBottom: 100
+        fontSize: 25,
+        marginBottom: 20
     },
     passwordContainer: {
         flexDirection: 'row',
@@ -235,6 +240,11 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         paddingHorizontal: 10
     },
+    logoContainer: {
+        flexDirection: 'row',
+        marginTop: 100,
+        alignSelf: 'center'
+    }
 });
 
 export default LoginScreen;

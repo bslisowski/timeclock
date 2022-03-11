@@ -1,10 +1,12 @@
 {
   "version": "1",
   "cognitoConfig": {
+    "identityPoolName": "timeclock85671e99_identitypool_85671e99",
+    "allowUnauthenticatedIdentities": false,
     "resourceNameTruncated": "timecl045b9539",
     "userPoolName": "timeclock",
     "autoVerifiedAttributes": [
-      "email"
+      "phone_number"
     ],
     "mfaConfiguration": "OFF",
     "mfaTypes": [
@@ -30,7 +32,7 @@
     "userpoolClientSetAttributes": false,
     "sharedId": "045b9539",
     "resourceName": "timeclock",
-    "authSelections": "userPoolOnly",
+    "authSelections": "identityPoolAndUserPool",
     "serviceName": "Cognito",
     "useDefault": "manual",
     "userPoolGroups": false,
@@ -73,6 +75,7 @@
       "Ref": "AWS::StackId"
     },
     "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PostConfirmation\",\n    \"lambdaFunctionName\": \"timeclockPostConfirmation\"\n  }\n]",
-    "permissions": []
+    "permissions": [],
+    "thirdPartyAuth": false
   }
 }
