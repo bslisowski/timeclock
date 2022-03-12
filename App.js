@@ -10,6 +10,11 @@ import ScheduleScreen from './screens/ScheduleScreen';
 import ClockinScreen from './screens/ClockinScreen';
 import CreateAnnouncementScreen from './screens/CreateAnnouncementScreen';
 import DayScreen from './screens/DayScreen';
+import ManagementScreen from './screens/mgmt_screens/ManagementScreen';
+import ManageUsersScreen from './screens/mgmt_screens/ManageUsersScreen';
+import EditAnnouncementsScreen from './screens/mgmt_screens/EditAnnouncementsScreen';
+import EditShiftsScreen from './screens/mgmt_screens/EditShiftsScreen';
+
 import 'react-native-gesture-handler';
 
 import Amplify, { Auth } from 'aws-amplify'
@@ -20,6 +25,22 @@ import useCachedResources from './hooks/useCachedResources';
 Amplify.configure(awsconfig)
 
 const Stack = createStackNavigator();
+
+function ManagementNav(){
+  const Stack = createStackNavigator();
+  
+  return (
+    <Stack.Navigator screenOptions={{
+      headerShown: false
+    }}>
+      <Stack.Screen name="MGMTDash" component={ManagementScreen}/>
+      <Stack.Screen name="ManageUsers" component={ManageUsersScreen}/>
+      <Stack.Screen name="EditAnnouncements" component={EditAnnouncementsScreen}/>
+      <Stack.Screen name="EditShifts" component={EditShiftsScreen}/>
+      <Stack.Screen name="Create" component={CreateAnnouncementScreen}/>     
+    </Stack.Navigator>
+  );
+};
 
 function LoginNav() {
   const Tab = createBottomTabNavigator();
@@ -43,7 +64,7 @@ function DashboardNav(){
       headerShown: false
     }}>
       <Stack.Screen name="Dash" component={DashboardScreen}/>
-      <Stack.Screen name="Create" component={CreateAnnouncementScreen}/>     
+      <Stack.Screen name="MGMT" component={ManagementNav}/>     
     </Stack.Navigator>
   );
 };

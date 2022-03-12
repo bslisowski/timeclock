@@ -77,11 +77,11 @@ const LoginScreen = ({ navigation }) => {
     };
 
     useEffect(async () => {
+        
         try {
-            
-            await Auth.currentAuthenticatedUser().then((user) => navigation.navigate("Main"));
+            await Auth.currentAuthenticatedUser().then(navigation.navigate("Main"));
         } catch (error) {
-            
+            console.log('ERROR: ', error);
         }
     }, []);
 
