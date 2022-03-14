@@ -92,16 +92,7 @@ const ScheduleScreen = ({ navigation }) => {
         const tempId = (Schedules.find((s) => s.startDate < date && s.endDate > date)).id;
         setDATA({ data: changeDATA(tempId), currId: tempId});
     }, []);
-    /*
-    let DATA = Calender.filter(value => 
-        value.date.getTime() >= schedule.startDate && value.date.getTime() <= schedule.endDate)
-    ;
-
-    const mySchedule = Shifts.filter(value => value.scheduleId === schedule.id && value.workerId === myId);
     
-    DATA.forEach((day) => {
-        day.shift = mySchedule.find(s => day.date.LocaleDateString() === s.date);
-    });*/
     
     const Item = ({ item }) => {
         return (
@@ -110,8 +101,7 @@ const ScheduleScreen = ({ navigation }) => {
     };
 
     const dayItemOnPress = (date) => {
-        console.log("hi");
-        //navigation.navigate("Day", { item: date });
+        navigation.navigate("Day", { item: date });
     };
 
     const onPress = (id) => {

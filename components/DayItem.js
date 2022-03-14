@@ -1,43 +1,7 @@
 import React, { memo } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-function getTime(day){
-    let hour = day.getUTCHours() - (day.getTimezoneOffset()/60);
-    if (hour > 12){
-        hour -= 12;
-    }
-    let minutes = day.getUTCMinutes();
-    if (minutes < 10){
-        return hour + ":0" + minutes;
-    }
-    else {
-        return hour + ":" + minutes;
-    }  
-}
-
-function getPosition(position){
-    switch (position){
-        case "BP":
-            return "Pretzels";
-        case "BB":
-            return "Baker";
-        case "BC":
-            return "Bakery Cashier";
-        case "BF": 
-            return "Bakery Floater";
-        case "MC":
-            return "Meat Cashier";
-        case "MCk": 
-            return "Cook";
-        case "MB":
-            return "Butcher";
-        case "MP":
-            return "Produce";
-        default:
-            return "Shit";
-    }
-}
+import ShiftItem from './ShiftItem';
 
 function getDay(day){
     switch(day){
@@ -62,30 +26,29 @@ function getDay(day){
 
 const DayItem = (props) => {
     const { item, onPress } = props;
-
+    
     const dayOfWeek = getDay(item.day);
     const date = item.date.toLocaleDateString();
 
     
     if (item.shift) {
-        const day = new Date(item.shift.startTime);
+        /*const day = new Date(item.shift.startTime);
         const startTime = getTime(day);
         day.setTime(item.shift.endTime);
         const endTime = getTime(day);
-        const position = getPosition(item.shift.position);
+        const position = getPosition(item.shift.position);*/
         return (
             <SafeAreaView>
                 <Pressable
                     onPress={() => {
-                        //event.persist();
-                        //console.log("item = ", item);
                         onPress(item);
                     }}
                 >
                     <View style={styles.container}>
                         <Text style={styles.date}>{dayOfWeek} {date}</Text>
-                        <Text>{position}    {startTime} - {endTime}</Text>
+                        <ShiftItem shift={item.shift}/>
                     </View>
+                    
                 </Pressable>
             </SafeAreaView>
         );
@@ -93,7 +56,7 @@ const DayItem = (props) => {
         return (
             <SafeAreaView>
                 <Pressable
-                    onPress={onPress}
+                    onPress={() => {onPress(item)}}
                 >
                     <View style={styles.container} >
                         <Text style={styles.date}>{dayOfWeek} {date}</Text>
@@ -110,7 +73,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 10,
         padding: 5,
-        
     },
     date: {
         fontSize: 18,
