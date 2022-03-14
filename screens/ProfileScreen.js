@@ -6,16 +6,7 @@ import { StackActions } from '@react-navigation/native';
 
 
 const ProfileScreen = ({ navigation }) => {
-    const onPressLogout = async () => {
-        try {
-            await Auth.signOut({ global: true }).then(() => {
-                navigation.dispatch(StackActions.popToTop());
-            });
-          } catch (error) {
-            console.log('error signing out: ', error);
-          }
-
-    };
+    const onPressLogout = () => navigation.dispatch(StackActions.popToTop());
 
     return (
         <SafeAreaView>

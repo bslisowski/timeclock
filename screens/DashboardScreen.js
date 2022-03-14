@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Text, StyleSheet, View, SectionList, Pressable, Alert } from 'react-native';
+import { Text, StyleSheet, View, SectionList, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Butt from '../components/Butt';
 import Announcements from '../assets/dummy-data/Announcements';
 import AnnouncementItem from '../components/AnnouncementItem';
 import { Ionicons } from '@expo/vector-icons';
@@ -130,7 +131,7 @@ const DashboardScreen = ({ navigation }) => {
     const tomorrow = Shifts.find(shift => shift.date === (new Date(Date.now() + 86400000)).toLocaleDateString());
     
     const Item = ({ item, type }) => {
-        //console.log(itemRenderCount++);
+        
         if (type === "Schedule"){
             return (
                 <View style={styles.announcementContainer}>
@@ -141,31 +142,30 @@ const DashboardScreen = ({ navigation }) => {
         else {
             return (
                 <View style={styles.announcementContainer}>
-                    <AnnouncementItem poster={item.poster} content={item.content} isManager={isManager} />
+                    <AnnouncementItem poster={item.poster} content={item.content} isManager={false} />
                 </View>
             );
         }
     };
+
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.header}>Welcome, {name}!</Text>
+            {
+                isManager
+                ?
+                <Butt 
+                    title="MGMT Dash" 
+                    onPress={() => navigation.navigate("MGMT")}
+                />
+                :
+                null
+            }
             <View style={styles.todayTomorrow}>
                 <Item2 item={today} title="Today" />
                 <Item2 item={tomorrow} title="Tomorrow" />
             </View>
             <Text style={styles.header2}>Announcements</Text>
-            {
-                isManager
-                ?
-                <View style={{ flexDirection: "row", justifyContent: 'center' }}>
-                    <Text style={{ padding: 5 }}>New Post</Text>
-                    <Pressable onPress={createButton}>
-                        <Ionicons name="create" size={24} color="black" />
-                    </Pressable>
-                </View>
-                :
-                null
-            }
             <View style={styles.list}>
                 <SectionList 
                     sections={DATA}
@@ -218,7 +218,16 @@ const styles = StyleSheet.create({
         margin: 5
     },
     todayTomorrow: {
-        marginBottom: 20
+        marginBottom: 20,
+        flexDirection: 'row',
+        justifyContent: 'space-evenly'
+    },
+    button: {
+        width: "25%",
+        alignSelf: 'center',
+        paddingHorizontal: 200,
+        elevation: 3,
+        borderRadius:4,
     }
 });
 

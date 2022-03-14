@@ -88,7 +88,6 @@ const ScheduleScreen = ({ navigation }) => {
     const [DATA, setDATA] = useState({ data: [], currId: -1});
     
     useEffect(() => {
-        //console.log(Schedules);
         const date = (new Date()).getTime();
         const tempId = (Schedules.find((s) => s.startDate < date && s.endDate > date)).id;
         setDATA({ data: changeDATA(tempId), currId: tempId});

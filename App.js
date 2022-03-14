@@ -48,7 +48,7 @@ function LoginNav() {
     <Tab.Navigator screenOptions={{
     headerShown: false
   }}>
-          <Tab.Screen name="Dashboard" component={DashboardNav}/>
+          <Tab.Screen name="Dashboard" component={DashboardScreen}/>
           <Tab.Screen name="Schedule" component={ScheduleNav}/>
           <Tab.Screen name="Clock" component={ClockinScreen}/>
           <Tab.Screen name="Profile" component={ProfileScreen}/>
@@ -63,7 +63,7 @@ function DashboardNav(){
     <Stack.Navigator screenOptions={{
       headerShown: false
     }}>
-      <Stack.Screen name="Dash" component={DashboardScreen}/>
+      <Stack.Screen name="Dash" component={LoginNav}/>
       <Stack.Screen name="MGMT" component={ManagementNav}/>     
     </Stack.Navigator>
   );
@@ -96,7 +96,7 @@ function App() {
           }}
         >
           <Stack.Screen name="Login" component={LoginScreen}/>
-          <Stack.Screen name="Main" component={LoginNav}/>
+          <Stack.Screen name="Main" component={DashboardNav}/>
         </Stack.Navigator>
       </NavigationContainer>
     );
