@@ -60,6 +60,10 @@ const DayScreen = ({ route, navigation }) => {
         setDate(new Date(date.getTime() + sign * dayToMs));
     };
 
+    const onLongPressArrow = () => {
+        setDate(new Date());
+    };
+
     useEffect(() => {
         setDate(route.params.item.date);
     }, []);
@@ -158,11 +162,11 @@ const DayScreen = ({ route, navigation }) => {
                 </View>
             </Modal>
             <View style={styles.headerContainer}>
-                <Pressable onPress={() => onPressArrow(-1)}>
+                <Pressable onPress={() => onPressArrow(-1)} onLongPress={onLongPressArrow}>
                     <EvilIcons name="arrow-left" size={50} color="black" />
                 </Pressable>
                 <Text style={styles.header} >{date ? date.toLocaleDateString() : null}</Text>
-                <Pressable onPress={() => onPressArrow(1)}>
+                <Pressable onPress={() => onPressArrow(1)} onLongPress={onLongPressArrow}>
                     <EvilIcons name="arrow-right" size={50} color="black" />
                 </Pressable>
             </View>

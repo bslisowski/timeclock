@@ -1,3 +1,5 @@
+
+
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -14,6 +16,9 @@ import ManagementScreen from './screens/mgmt_screens/ManagementScreen';
 import ManageUsersScreen from './screens/mgmt_screens/ManageUsersScreen';
 import EditAnnouncementsScreen from './screens/mgmt_screens/EditAnnouncementsScreen';
 import EditShiftsScreen from './screens/mgmt_screens/EditShiftsScreen';
+import { FontAwesome } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import 'react-native-gesture-handler';
 
@@ -45,13 +50,54 @@ function ManagementNav(){
 function LoginNav() {
   const Tab = createBottomTabNavigator();
   return (
-    <Tab.Navigator screenOptions={{
-    headerShown: false
-  }}>
-          <Tab.Screen name="Dashboard" component={DashboardScreen}/>
-          <Tab.Screen name="Schedule" component={ScheduleNav}/>
-          <Tab.Screen name="Clock" component={ClockinScreen}/>
-          <Tab.Screen name="Profile" component={ProfileScreen}/>
+    <Tab.Navigator 
+      screenOptions={{
+        headerShown: false.valueOf,
+        tabBarActiveTintColor: '#fb7e14',
+        tabBarInactiveTintColor: 'black'
+      }}
+    >
+          <Tab.Screen 
+            name="Dashboard" 
+            component={DashboardScreen}
+            options={{
+              headerShown: false,
+              showIcon: true,
+              tabBarIcon: ({ color, size }) => (
+                <FontAwesome name="dashboard" size={size} color={color}/>
+              )
+            }}  
+          />
+          <Tab.Screen 
+            name="Schedule" 
+            component={ScheduleNav}
+            options={{
+              headerShown: false,
+              tabBarIcon: ({ color, size }) => (
+                <FontAwesome name="calendar" size={size} color={color} />
+              )
+            }} 
+          />
+          <Tab.Screen 
+            name="Clock" 
+            component={ClockinScreen}
+            options={{
+              headerShown: false,
+              tabBarIcon: ({ color, size }) => (
+                <AntDesign name="clockcircleo" size={size} color={color} />
+              )
+            }}   
+          />
+          <Tab.Screen 
+            name="Profile" 
+            component={ProfileScreen}
+            options={{
+              headerShown: false,
+              tabBarIcon: ({ color, size }) => (
+                <MaterialIcons name="account-circle" size={size} color={color} />
+              )
+            }}   
+          />
       </Tab.Navigator>
   );
 };
