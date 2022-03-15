@@ -10,49 +10,139 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import ShiftItem from '../components/ShiftItem';
 import Shifts from '../assets/dummy-data/Shifts';
 import { EvilIcons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
 
 const Item = (item) => {
-
     return <ShiftItem shift={item.item} needsName={true}/>;
-        
 }
 
 const DayScreen = ({ route, navigation }) => {
     const [showModal, setShowModal] = useState(false);
-    const [requestType, setRquestType] = useState()
+    const [requestType, setRequestType] = useState("");
+    const [off, setOff] = useState(false);
+    const [change, setChange] = useState(false);
+    const [submitError, setSubmitError] = useState("");
+    const [description, setDescription] = useState("");
 
     const { item } = route.params;
     const data = Shifts.filter((shift) => item.date.toLocaleDateString() === shift.date);
     data.sort((a, b) => a.startTime - b.startTime);
     
+    const onPressCircles = (type) => {
+        if (type === "off"){
+            setOff(!off);
+            if (!off){
+                setChange(false);
+            }
+        }
+        else if (type === "change"){
+            setChange(!change);
+            if (!change){
+                setOff(false);
+            }
+        }
+        else {
+            console.log("error");
+        }
+        setSubmitError("");
+    };
+
+    const onPressX = () => {
+        setShowModal(false);
+        setOff(false);
+        setChange(false);
+        setSubmitError("");
+    };
+
+    const onPressSubmit = () => {
+        if (!off && !change){
+            setSubmitError("Request Type Required");
+            return;
+        }
+        setSubmitError("");
+    };
+
     return (
         <SafeAreaView>
             <Modal
                 animationType="slide"
                 visible={showModal}
                 transparent={true}
-                onRequestClose={() => {
-                    console.log("onRequestClose");
-                    setShowModal(!showModal);
-                }}
+                onRequestClose={() => {setShowModal(!showModal)}}
             >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
-                        <Pressable onPress={() => setShowModal(false)}>
-                            <EvilIcons
-                                name="close"
-                                size={24}
-                                color="black"
-                                style={styles.exitIcon}
-                            />
-                        </Pressable>  
+                        <View style={styles.modalTitleContainer}>
+                            <Text style={styles.modalTitle}>Make Request</Text>
+                            <Pressable onPress={onPressX}>
+                                <EvilIcons
+                                    name="close"
+                                    size={24}
+                                    color="black"
+                                    style={styles.exitIcon}
+                                />
+                            </Pressable>  
+                        </View>
                         <View style={styles.requestView}>
-                            <Text>Request off ◯    Request change ◯</Text>
+                            <View style={styles.requestType}>   
+                                <Text>Request Off</Text>
+                                <Pressable onPress={() => {onPressCircles("off")}} hitSlop={5}>
+                                {
+                                    off
+                                    ?
+                                    <FontAwesome 
+                                        name="circle" 
+                                        size={15} 
+                                        color="black"  
+                                        style={styles.requestCircles}
+                                    />
+                                    :
+                                    <FontAwesome 
+                                        name="circle-o" 
+                                        size={15} 
+                                        color="black" 
+                                        style={styles.requestCircles}
+                                    />
+                                }
+                                </Pressable>
+                                <Text>Request Change</Text>
+                                <Pressable onPress={() => {onPressCircles("change")}} hitSlop={5}>
+                                {
+                                    change
+                                    ?
+                                    <FontAwesome 
+                                        name="circle" 
+                                        size={15} 
+                                        color="black"  
+                                        style={styles.requestCircles}
+                                    />
+                                    :
+                                    <FontAwesome 
+                                        name="circle-o" 
+                                        size={15} 
+                                        color="black" 
+                                        style={styles.requestCircles}
+                                    />
+                                }
+                                </Pressable>
+                            </View>
+                            {
+                                submitError
+                                ?
+                                <Text style={styles.error}>{submitError}</Text>
+                                :
+                                null
+                            }
                             <TextInput
                                 style={styles.requestInput}
                                 placeholder="Details"
                                 multiline={true}
+                                onChangeText={setDescription}
+                            />
+                            <Button 
+                                title="Submit Request"
+                                onPress={onPressSubmit}
                             />
                         </View>
                     </View>
@@ -119,23 +209,43 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5
       },
-      modalTitle: {
-          flexDirection: 'row',
-          alignItems: 'center',
+      modalTitleContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        
       },
       requestView: {
-          margin: 15
+        margin: 15
       },
       requestInput: {
-          marginTop: 10,
+        marginTop: 10,
         borderWidth: 1,
         height: 30,
         padding: 5
       },
       exitIcon: {
-          marginLeft: 210,
-
+        alignSelf: 'flex-end',
+        flex: 1
       },
+      requestType: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-evenly'
+      },
+      requestCircles: {
+        marginHorizontal: 5
+      },
+      error: {
+        textAlign: 'center',
+        color: 'red'
+      },
+      modalTitle: {
+        fontWeight: 'bold',
+        fontSize: 18,
+        marginLeft: 20,
+        flex: 1,
+        textAlign: 'center'
+      }
 });
 
 export default DayScreen;
