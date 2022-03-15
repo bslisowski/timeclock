@@ -35,7 +35,7 @@ export default [
         manager: true
     },
     {
-        id: 2,
+        id: 8,
         name: "Zeni",
         manager: false
     },

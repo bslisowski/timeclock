@@ -43,17 +43,16 @@ function getPosition(position){
 
 
 const ShiftItem = ({ shift, needsName }) => {
-    //const thisShift = shift.item;
+    if (!shift){
+        return null;
+    }
+    
     const name = (Workers.find((element) => element.id === shift.workerId)).name;
     const day = new Date(shift.startTime);
     const startTime = getTime(day);
     day.setTime(shift.endTime);
     const endTime = getTime(day);
     const position = getPosition(shift.position);
-    /*const name = "a";
-    const position = "b";
-    const startTime = "c";
-    const endTime = "d";*/
 
     return (
         <View style={needsName ? styles.container : null}>
@@ -78,7 +77,6 @@ const styles = StyleSheet.create({
     },
     name: {
         fontWeight: 'bold',
-        
     }
 });
 

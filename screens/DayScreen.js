@@ -1,10 +1,4 @@
-/*
-        TODO:
-                -switch days
-*/
-
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, StyleSheet, View, FlatList, Modal, Pressable, TextInput, Button } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ShiftItem from '../components/ShiftItem';
@@ -12,7 +6,7 @@ import Shifts from '../assets/dummy-data/Shifts';
 import { EvilIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 
-
+const dayToMs = 86400000;
 const Item = (item) => {
     return <ShiftItem shift={item.item} needsName={true}/>;
 }
@@ -24,10 +18,9 @@ const DayScreen = ({ route, navigation }) => {
     const [change, setChange] = useState(false);
     const [submitError, setSubmitError] = useState("");
     const [description, setDescription] = useState("");
+    const [date, setDate] = useState(null);
+    const [data, setData] = useState([]);
 
-    const { item } = route.params;
-    const data = Shifts.filter((shift) => item.date.toLocaleDateString() === shift.date);
-    data.sort((a, b) => a.startTime - b.startTime);
     
     const onPressCircles = (type) => {
         if (type === "off"){
@@ -62,6 +55,22 @@ const DayScreen = ({ route, navigation }) => {
         }
         setSubmitError("");
     };
+
+    const onPressArrow = (sign) => {
+        setDate(new Date(date.getTime() + sign * dayToMs));
+    };
+
+    useEffect(() => {
+        setDate(route.params.item.date);
+    }, []);
+
+    useEffect(() => {
+        if (!date){
+            return;
+        }
+        setData((Shifts.filter((shift) => date.toLocaleDateString() === shift.date))
+                    .sort((a, b) => a.startTime - b.startTime));
+    }, [date]);
 
     return (
         <SafeAreaView>
@@ -148,7 +157,15 @@ const DayScreen = ({ route, navigation }) => {
                     </View>
                 </View>
             </Modal>
-            <Text style={styles.header} >{ item ? item.date.toLocaleDateString() : "errur"}</Text>
+            <View style={styles.headerContainer}>
+                <Pressable onPress={() => onPressArrow(-1)}>
+                    <EvilIcons name="arrow-left" size={50} color="black" />
+                </Pressable>
+                <Text style={styles.header} >{date ? date.toLocaleDateString() : null}</Text>
+                <Pressable onPress={() => onPressArrow(1)}>
+                    <EvilIcons name="arrow-right" size={50} color="black" />
+                </Pressable>
+            </View>
             <Button 
                 title='Make Request'
                 onPress={() => setShowModal(!showModal)}
@@ -174,9 +191,8 @@ const styles = StyleSheet.create({
     header: {
         fontSize: 30,
         fontWeight: "bold",
-        textAlign: "center", 
-        marginVertical: 40,
-        
+        textAlign: "center",
+        marginHorizontal: 30
     },
     header2: {
         fontSize: 20,
@@ -211,8 +227,7 @@ const styles = StyleSheet.create({
       },
       modalTitleContainer: {
         flexDirection: 'row',
-        alignItems: 'center',
-        
+        alignItems: 'center', 
       },
       requestView: {
         margin: 15
@@ -245,6 +260,12 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         flex: 1,
         textAlign: 'center'
+      },
+      headerContainer: {
+        flexDirection: 'row',
+        marginVertical: 40,
+        alignItems: 'center',
+        justifyContent: 'center'
       }
 });
 
