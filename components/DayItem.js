@@ -25,8 +25,7 @@ function getDay(day){
 }
 
 const DayItem = (props) => {
-    const { item, onPress } = props;
-    
+    const { item, onPress } = props;    
     const dayOfWeek = getDay(item.day);
     const date = item.date.toLocaleDateString();
     const color = (item.date.toLocaleDateString() === (new Date()).toLocaleDateString()) ? '#fb7e14' : 'black';

@@ -1,9 +1,6 @@
 /*
         TODO:
-                -schedule screen lists current week
-                    -buttons to go back/forward a week
                 -enable search
-                -navigate to day screen
 */
 
 import React, { useState, useEffect } from 'react';
@@ -85,11 +82,8 @@ const ScheduleScreen = ({ navigation }) => {
         setDATA({ data: changeDATA(tempId), currId: tempId});
     }, []);
     
-    
     const Item = ({ item }) => {
-        return (
-            <DayItem item={item} onPress={dayItemOnPress}/>
-        );
+        return <DayItem item={item} onPress={dayItemOnPress}/>;
     };
 
     const dayItemOnPress = (date) => {
