@@ -2,8 +2,15 @@ import React, { useState } from 'react';
 import { Text, StyleSheet, View, SafeAreaView, Pressable } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import * as Location from 'expo-location';
+import { useEffect } from 'react/cjs/react.production.min';
 
 const toMeters = 111139;
+
+function isDST(d) {
+    let jan = new Date(d.getFullYear(), 0, 1).getTimezoneOffset();
+    let jul = new Date(d.getFullYear(), 6, 1).getTimezoneOffset();
+    return Math.max(jan, jul) !== d.getTimezoneOffset();    
+};
 
 const ClockinScreen = () => {
     const [clockedIn, setClockedIn] = useState(false);
@@ -17,7 +24,8 @@ const ClockinScreen = () => {
     // 40.00317288735443, -75.29360148887137
     const pressClock = async () => {
         const time = new Date();
-        
+        const dst = isDST(time);
+
         await Location.requestForegroundPermissionsAsync()
             .then( async ({ status }) => {
                 if (status != 'granted'){
@@ -41,11 +49,11 @@ const ClockinScreen = () => {
                             setStatusMessage("Clock In");
                         } 
                         else {
-                            const tempHour = time.getHours();
+                            const tempHour = dst ? time.getHours() - 1 : time.getHours();
                             setTimeInHour(tempHour);
                             const tempMinute = time.getMinutes()
                             setTimeInMinute(tempMinute);
-                            setStatusMessage("Clocked in at: ", tempHour%12 + 1, ":", tempMinute, " ", (tempHour > 12 ? "PM" : "AM"));
+                            setStatusMessage("Clocked in at: " + (tempHour%12 + 1) + ":" + tempMinute + " " + (tempHour > 12 ? "PM" : "AM"));
                         }
                         setClockedIn(!clockedIn);
                     }
@@ -53,9 +61,11 @@ const ClockinScreen = () => {
             });
     };
 
-    const onPress = () => {
-
-    };
+    /*useEffect(() => {
+        if (clockedIn){
+            setStatusMessage
+        }
+    }, [clockedIn]);*/
 
     return (
         <SafeAreaView >
