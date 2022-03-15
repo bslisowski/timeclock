@@ -10,22 +10,14 @@ import React, { useState, useEffect } from 'react';
 import { Text, 
         StyleSheet, 
         View, 
-        SectionList, 
-        PixelRatio, 
-        Pressable, 
-        Modal, 
-        TextInput,
         FlatList,
         Button
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Workers from '../assets/dummy-data/Workers';
 import Shifts from '../assets/dummy-data/Shifts';
 import Schedules from '../assets/dummy-data/Schedules';
 import DayItem from '../components/DayItem';
 import Calender from '../assets/dummy-data/Calender';
-import { EvilIcons } from '@expo/vector-icons';
-import { Octicons } from '@expo/vector-icons';
 
 const myId = 1;
 const dayToMs = 86400000;

@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ShiftItem from './ShiftItem';
@@ -29,14 +29,9 @@ const DayItem = (props) => {
     
     const dayOfWeek = getDay(item.day);
     const date = item.date.toLocaleDateString();
-
+    const color = (item.date.toLocaleDateString() === (new Date()).toLocaleDateString()) ? '#fb7e14' : 'black';
     
     if (item.shift) {
-        /*const day = new Date(item.shift.startTime);
-        const startTime = getTime(day);
-        day.setTime(item.shift.endTime);
-        const endTime = getTime(day);
-        const position = getPosition(item.shift.position);*/
         return (
             <SafeAreaView>
                 <Pressable
@@ -44,7 +39,7 @@ const DayItem = (props) => {
                         onPress(item);
                     }}
                 >
-                    <View style={styles.container}>
+                    <View style={[styles.container, { backgroundColor: color }]}>
                         <Text style={styles.date}>{dayOfWeek} {date}</Text>
                         <ShiftItem shift={item.shift}/>
                     </View>
@@ -58,7 +53,7 @@ const DayItem = (props) => {
                 <Pressable
                     onPress={() => {onPress(item)}}
                 >
-                    <View style={styles.container} >
+                    <View style={[styles.container, { borderColor: color }]} >
                         <Text style={styles.date}>{dayOfWeek} {date}</Text>
                         <Text>Day off!! :)</Text>
                     </View>
@@ -70,7 +65,7 @@ const DayItem = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        borderWidth: 1,
+        borderWidth: 5,
         borderRadius: 10,
         padding: 5,
     },

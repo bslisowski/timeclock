@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Text, StyleSheet, View, FlatList, Modal, Pressable, TextInput, Button } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ShiftItem from '../components/ShiftItem';
 import Shifts from '../assets/dummy-data/Shifts';
 import { EvilIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native';
 
 const dayToMs = 86400000;
 const Item = (item) => {
@@ -20,7 +21,7 @@ const DayScreen = ({ route, navigation }) => {
     const [description, setDescription] = useState("");
     const [date, setDate] = useState(null);
     const [data, setData] = useState([]);
-
+    
     
     const onPressCircles = (type) => {
         if (type === "off"){
@@ -75,6 +76,14 @@ const DayScreen = ({ route, navigation }) => {
         setData((Shifts.filter((shift) => date.toLocaleDateString() === shift.date))
                     .sort((a, b) => a.startTime - b.startTime));
     }, [date]);
+
+    useFocusEffect(
+        useCallback(() => {
+          return () => {
+            navigation.popToTop();
+          };
+        }, [])
+      );
 
     return (
         <SafeAreaView>

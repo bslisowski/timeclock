@@ -2,8 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import Workers from '../assets/dummy-data/Workers';
 
-//worker id, start time, end time, position
-//worker.name
+const myId = 1;
+
 function getTime(day){
     let hour = day.getUTCHours() - (day.getTimezoneOffset()/60);
     if (hour > 12){
@@ -53,9 +53,10 @@ const ShiftItem = ({ shift, needsName }) => {
     day.setTime(shift.endTime);
     const endTime = getTime(day);
     const position = getPosition(shift.position);
+    const isMe = myId === shift.workerId;
 
     return (
-        <View style={needsName ? styles.container : null}>
+        <View style={needsName ? [styles.container, isMe ? { backgroundColor: '#fb7e14' } : null] : null}>
             {
                 needsName
                 ?
@@ -70,7 +71,7 @@ const ShiftItem = ({ shift, needsName }) => {
 
 const styles = StyleSheet.create({
     container: {
-        borderWidth: 1,
+        borderWidth: 5,
         borderRadius: 10,
         padding: 5,
         marginVertical: 5,

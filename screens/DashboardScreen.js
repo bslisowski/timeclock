@@ -4,8 +4,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Butt from '../components/Butt';
 import Announcements from '../assets/dummy-data/Announcements';
 import AnnouncementItem from '../components/AnnouncementItem';
-import { Ionicons } from '@expo/vector-icons';
-import Schedules from '../assets/dummy-data/Schedules';
 import DayItem from '../components/DayItem';
 import Shifts from '../assets/dummy-data/Shifts';
 import Calender from '../assets/dummy-data/Calender';
