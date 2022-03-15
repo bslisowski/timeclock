@@ -5,14 +5,16 @@ import ShiftItem from '../components/ShiftItem';
 import Shifts from '../assets/dummy-data/Shifts';
 import { EvilIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { StackActions } from '@react-navigation/native';
 
 const dayToMs = 86400000;
 const Item = (item) => {
     return <ShiftItem shift={item.item} needsName={true}/>;
 }
 
-const DayScreen = ({ route, navigation }) => {
+const DayScreen = ({ route }) => {
+    const navigation = useNavigation();
     const [showModal, setShowModal] = useState(false);
     const [requestType, setRequestType] = useState("");
     const [off, setOff] = useState(false);
@@ -80,7 +82,7 @@ const DayScreen = ({ route, navigation }) => {
     useFocusEffect(
         useCallback(() => {
           return () => {
-            navigation.popToTop();
+            navigation.dispatch(StackActions.pop(1));
           };
         }, [])
       );

@@ -69,7 +69,7 @@ function getPosition(position){
     }
 }
 
-const DashboardScreen = ({ navigation }) => {
+const DashboardScreen = ({ route, navigation }) => {
 
     const [name, setName] = useState("");
     const [isManager, setIsManager] = useState(false);
@@ -87,26 +87,30 @@ const DashboardScreen = ({ navigation }) => {
     },[]);
 
     useEffect(() => navigation.addListener('beforeRemove', (e) => {
+        
+        const state = navigation.getState();
         e.preventDefault();
-        Alert.alert(
-            "Sign Out?",
-            null,
-            [
-                {
-                    text: "Sign Out",
-                    onPress: async () => {
-                        await Auth.signOut({ global: true })
-                            .then(() => navigation.dispatch(e.data.action))
+        if (!state.history.find(value => value.key.includes("Schedule"))){
+            Alert.alert(
+                "Sign Out?",
+                null,
+                [
+                    {
+                        text: "Sign Out",
+                        onPress: async () => {
+                            await Auth.signOut({ global: true })
+                                .then(() => navigation.dispatch(e.data.action))
 
+                        },
                     },
-                },
-                {
-                    text: "Cancel",
-                    onPress: () => console.log("cancel pressed"),
-                    style: 'cancel'
-                }
-            ]
-        );
+                    {
+                        text: "Cancel",
+                        onPress: () => console.log("cancel pressed"),
+                        style: 'cancel'
+                    }
+                ]
+            );
+            }
     }), [navigation]);
 
     const DATA = [

@@ -3,63 +3,63 @@ import { Text, StyleSheet, View, Button, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Auth } from 'aws-amplify';
 import { StackActions } from '@react-navigation/native';
+import ProfilePic from '../components/ProfilePic';
+import Workers from '../assets/dummy-data/Workers';
 
 
 const ProfileScreen = ({ navigation }) => {
-    const [imageUri, setImageUri] = useState("../assets/grilledcheese.jpg");
+    const [imageUri, setImageUri] = useState("");
     const [name, setName] = useState("");
-
+    
     const onPressLogout = () => navigation.dispatch(StackActions.popToTop());
 
-    useEffect(() => {
-        const getName = async () => {
-            await Auth.currentAuthenticatedUser().then(user => {
-                setName(user.attributes.name);   
+    useEffect( async () => {
+        try{
+            await Auth.currentAuthenticatedUser().then(value => {
+                setName(value.attributes.name); 
+                const uri =  Workers.find(work => {
+                    if (work){
+                        if (work.name === name) {
+                            setImageUri(work.picUri);
+                            return work;
+                        }
+                        else return null;
+                    }
+                    else {
+                        console.log("work error");
+                        return null;
+                    }
+                });
             });
-        };
-        getName();
+        } catch (error) {
+            console.log(error);
+        }
     }, []);
 
     return (
         <SafeAreaView>
-            <View style={styles.imageContainer}>
-                <Image style={styles.image} source={require('../assets/grilledcheese.jpg')} />
+            <View style={styles.container}>
+                <ProfilePic uri={imageUri}/>
+                <Text style={styles.name}>{name}</Text>
+                <Button 
+                    onPress={onPressLogout}
+                    title="Log Out"
+                    style={styles.logoutButton}
+                />
             </View>
-            <Text style={styles.name}>{name}</Text>
-            <Button 
-                onPress={onPressLogout}
-                title="Log Out"
-                style={styles.logoutButton}
-            />
         </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
+    container: {
+        marginTop: 30
+    },
     logoutButton: {
         borderWidth: 1,
         borderRadius: 10,
         width: "25%",
         padding: 25, 
-    },
-    imageContainer: {
-        borderWidth: 5,
-        borderColor: '#fb7e14',
-        borderRadius: 150,
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        height: 150,
-        width: 150,
-        textAlign: "center",
-        alignSelf: 'center'
-    },
-    image: {
-        height: "100%",
-        width: "100%",
-        resizeMode: 'contain',
-        borderRadius: 300
     },
     name: {
         fontWeight: 'bold',

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import Workers from '../assets/dummy-data/Workers';
+import ProfilePic from './ProfilePic';
 
 const myId = 1;
 
@@ -56,15 +57,24 @@ const ShiftItem = ({ shift, needsName }) => {
     const isMe = myId === shift.workerId;
 
     return (
-        <View style={needsName ? [styles.container, isMe ? { backgroundColor: '#fb7e14' } : null] : null}>
+        <View style={needsName ? [styles.container, isMe ? { backgroundColor: '#fb7e14' } : styles.container] : null}>
             {
                 needsName
                 ?
-                <Text style={styles.name}>{name}</Text>
+                <ProfilePic height={50} width={50}/>
                 :
                 null
             }
-            <Text>{position}    {startTime} - {endTime}</Text>
+            <View style={styles.infoContainer}>
+                {
+                    needsName
+                    ?
+                    <Text style={styles.name}>{name}</Text>
+                    :
+                    null
+                }
+                <Text>{position}    {startTime} - {endTime}</Text>
+            </View>
         </View>
     );
 };
@@ -75,9 +85,14 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 5,
         marginVertical: 5,
+        flexDirection: 'row',
+        alignContent: 'center'
     },
     name: {
         fontWeight: 'bold',
+    },
+    infoContainer: {
+        marginLeft: 5
     }
 });
 
