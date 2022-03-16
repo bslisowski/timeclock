@@ -6,11 +6,12 @@
     "resourceNameTruncated": "timecl045b9539",
     "userPoolName": "timeclock",
     "autoVerifiedAttributes": [
-      "phone_number"
+      "email"
     ],
-    "mfaConfiguration": "OFF",
+    "mfaConfiguration": "OPTIONAL",
     "mfaTypes": [
-      "SMS Text Message"
+      "SMS Text Message",
+      "TOTP"
     ],
     "smsAuthenticationMessage": "Your authentication code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
@@ -53,14 +54,29 @@
       ]
     },
     "breakCircularDependency": true,
-    "dependsOn": [],
+    "dependsOn": [
+      {
+        "category": "function",
+        "resourceName": "timeclockPostConfirmation",
+        "triggerProvider": "Cognito",
+        "attributes": [
+          "Arn",
+          "Name"
+        ]
+      }
+    ],
     "hostedUI": false,
-    "triggers": {},
+    "triggers": {
+      "PostConfirmation": [
+        "custom"
+      ]
+    },
     "authProviders": [],
     "parentStack": {
       "Ref": "AWS::StackId"
     },
     "permissions": [],
-    "thirdPartyAuth": false
+    "thirdPartyAuth": false,
+    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PostConfirmation\",\n    \"lambdaFunctionName\": \"timeclockPostConfirmation\"\n  }\n]"
   }
 }

@@ -28,7 +28,17 @@
           "EMAIL"
         ]
       },
-      "dependsOn": []
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "timeclockPostConfirmation",
+          "triggerProvider": "Cognito",
+          "attributes": [
+            "Arn",
+            "Name"
+          ]
+        }
+      ]
     }
   },
   "api": {
@@ -53,5 +63,11 @@
       }
     }
   },
-  "function": {}
+  "function": {
+    "timeclockPostConfirmation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  }
 }
