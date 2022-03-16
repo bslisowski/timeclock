@@ -40,6 +40,7 @@ const LoginScreen = ({ navigation }) => {
             setError(err.message);
             console.log(err);
         }
+        navigation.navigate("Main");
     };
 
     const onPressLogout = async () => {

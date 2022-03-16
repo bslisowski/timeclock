@@ -13,5 +13,11 @@
   "triggerEventPath": "PostConfirmation.event.json",
   "roleName": "timeclockPostConfirmation",
   "skipEdit": true,
-  "enableCors": false
+  "enableCors": false,
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "usertable",
+      "environmentVariableName": "USERTABLE"
+    }
+  ]
 }

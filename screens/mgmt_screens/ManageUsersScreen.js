@@ -20,14 +20,23 @@ import { Auth } from 'aws-amplify';
 */
 
 const submitSignUp = async (submission) => {
-    const response = await Auth.signUp(submission);
-    console.log(response);
+    let response;
+    try{
+        response = await Auth.signUp(submission);
+        console.log(response);
+    } catch (error) {
+        console.log(error);
+    }
     return response;
 };
 
 const confirm = async (username, confirmation) => {
-    const response = await Auth.confirmSignUp(username, confirmation);
-    console.log(response);
+    try{
+        response = await Auth.confirmSignUp(username, confirmation);
+        console.log(response);
+    } catch (error) {
+        console.log(error)
+    }
     return response;
 };
 
@@ -71,9 +80,9 @@ const ManageUsersScreen = () => {
         }
     };
 
-    /*useEffect(async () => {
+    useEffect(async () => {
             await Auth.currentAuthenticatedUser().then((user) => console.log(user.attributes));
-    }, []);*/
+    }, []);
 
     return (
         <SafeAreaView style={styles.container}>

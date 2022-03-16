@@ -13,25 +13,13 @@
      console.log("no sub provided");
      return;
    }
- 
+   console.log(tableName);
    const now = new Date();
    const timestamp = now.getTime();
    
-   /*
-  "username": {
-    "S": "a"
-  },
-  "employer": {
-    "S": "a"
-  },
-  "name": {
-    "S": "a"
-  }
-}
-   
-   */
+
    const userItem = {
-     __typename: { S: 'User' },
+     __typename: { S: "User" },
      _lastChangedAt: { N: timestamp.toString() },
      _version: { N: "1" },
      createdAt: { S: now.toISOString() },
@@ -39,8 +27,9 @@
      id: { S: event.request.userAttributes.sub },
      name: { S: event.request.userAttributes.name },
      isManager: { BOOL: false},
-    username: { S: event.request.userAttributes.username },
-    emloyer: { S: "Stoltzfus Family Foods" }
+    username: { S: event.request.userAttributes.preferred_username },
+    employer: { S: "Stoltzfus Family Foods" },
+    _deleted: { BOOL: false },
    }
  
    const params = {

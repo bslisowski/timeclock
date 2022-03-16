@@ -72,7 +72,7 @@ function getPosition(position){
 const DashboardScreen = ({ route, navigation }) => {
 
     const [name, setName] = useState("");
-    const [isManager, setIsManager] = useState(false);
+    const [isManager, setIsManager] = useState(true);
 
     useEffect(() => {
         const getName = async () => {
